@@ -1,0 +1,37 @@
+name: Build Rami APK
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - run: flutter pub get
+      - run: flutter analyze --no-fatal-infos --no-fatal-warnings
+      - run: flutter test
+      - run: flutter build apk --release
+      - run: flutter build appbundle --release
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rami-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rami-aab
+          path: build/app/outputs/bundle/release/app-release.aab
