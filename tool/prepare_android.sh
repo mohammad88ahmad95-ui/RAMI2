@@ -10,6 +10,9 @@ cp -r android/app/src/main "$TMP/main"
 rm -rf android
 flutter create . --platforms=android --org com.rami --project-name rami --no-pub
 
+# flutter create يضيف اختبار افتراضي لا يناسب رامي
+rm -f test/widget_test.dart
+
 # حذف MainActivity المولّد واستبداله بنسخة رامي (FlutterFragmentActivity للبصمة)
 rm -rf android/app/src/main/kotlin android/app/src/main/java
 mkdir -p android/app/src/main/kotlin
